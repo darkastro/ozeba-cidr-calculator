@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ozeba CIDR Calculator for Masscan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input {
+            background-color: #333;
+            color: #fff;
+        }
+        button {
+            background-color: #ff9800;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e68900;
+        }
+        #output {
+            margin-top: 20px;
+            font-weight: bold;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        h2 {
+            color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <h2>Ozeba CIDR Calculator for Masscan</h2>
+    <label>Enter Start IP:</label>
+    <input type="text" id="startIP" placeholder="e.g., 101.44.16.0">
+    <br>
+    <label>Enter Approximate Number of IPs:</label>
+    <input type="number" id="numIPs" placeholder="e.g., 5900000">
+    <br>
+    <button onclick="calculateCIDR()">Calculate CIDR</button>
+    <p id="output"></p>
+
+    <script>
+        function calculateCIDR() {
+            let ip = document.getElementById("startIP").value;
+            let numIPs = parseInt(document.getElementById("numIPs").value);
+            
+            if (!ip || isNaN(numIPs) || numIPs <= 0) {
+                document.getElementById("output").innerText = "Please enter a valid IP and number of IPs.";
+                return;
+            }
+            
+            let prefix = 32;
+            while (Math.pow(2, 32 - prefix) < numIPs) {
+                prefix--;
+            }
+            
+            let result = `${ip}/${prefix}`;
+            let masscanCommand = `./masscan -p22,80,443 ${result} --rate=500`;
+            
+            document.getElementById("output").innerHTML = `
+                <p>CIDR Block: <span style='color: #ff9800;'>${result}</span></p>
+                <p>Use this in Masscan:</p>
+                <code style='background-color: #222; padding: 5px; border-radius: 5px; display: block;'>${masscanCommand}</code>
+            `;
+        }
+    </script>
+</body>
+</html>
