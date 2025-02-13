@@ -46,6 +46,4 @@ To find IP ranges in a specific **city or country**, you can use **IPinfo**:
 - **Cybersecurity professionals**  
 - **Anyone working with Masscan and large IP ranges**  
 
-🔗 **Live Demo (Optional if hosted)**: [Your GitHub Pages Link]  
 
-Let me know if you need further refinements! 🚀
